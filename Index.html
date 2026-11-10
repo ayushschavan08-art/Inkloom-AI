@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inkloom AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2 class="logo">Inkloom AI</h2>
+        <nav>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#review">Content Review</a>
+            <a href="#guidelines">Brand Guidelines</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <section id="dashboard" class="welcome-section">
+            <h1>Welcome to Inkloom AI</h1>
+            <p>AI-Assisted Brand Content Compliance Checker</p>
+        </section>
+
+        <section id="review" class="container">
+            <div class="review-box">
+                <h2>Content Review</h2>
+                <label for="content">Enter your content:</label>
+                <textarea id="content"
+                    placeholder="Enter content to analyse..."></textarea>
+                <button id="analyzeBtn">Analyze Content</button>
+            </div>
+
+            <div id="result"></div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
