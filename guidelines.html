@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Guidelines | Inkloom AI</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+.guideline-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 25px;
+    box-sizing: border-box;
+}
+        .guideline-header {
+            margin-bottom: 25px;
+        }
+
+        .guideline-header h1 {
+            color: #171b35;
+            font-size: 30px;
+        }
+
+        .guideline-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        .guideline-card h2 {
+            color: #171b35;
+            margin-bottom: 20px;
+        }
+
+        .guideline-card label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 8px;
+        }
+
+        .guideline-card input,
+        .guideline-card textarea,
+        .guideline-card select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .guideline-card textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .saved-box {
+            background: #f0f7ff;
+            padding: 18px;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        @media(max-width: 768px) {
+            .guideline-container {
+                padding: 15px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2 class="logo">Inkloom AI</h2>
+
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="guidelines.html" class="active">Brand Guidelines</a>
+        <a href="content.html">Content Review</a>
+    </nav>
+
+    <p style="position:absolute; bottom:15px; left:15px; font-size:11px;">
+        AI-Powered Brand Governance
+    </p>
+</div>
+
+<main class="main-content">
+    <div class="container guideline-container">
+    <div class="guideline-header">
+        <h1>Brand Guidelines</h1>
+        <p>Manage your organisation's identity, tone, rules and approved information.</p>
+    </div>
+
+    <form id="guidelineForm">
+
+        <div class="guideline-card">
+            <h2>🏢 Organisation Details</h2>
+
+            <label>Brand / Organisation Name</label>
+            <input type="text" id="brandName"
+                placeholder="Example: NovaTech" required>
+
+            <label>Industry</label>
+            <input type="text" id="industry"
+                placeholder="Example: Technology">
+
+            <label>Brand Description</label>
+            <textarea id="description"
+                placeholder="Describe your organisation..."></textarea>
+        </div>
+
+        <div class="guideline-card">
+            <h2>🎯 Brand Voice & Tone</h2>
+
+            <label>Preferred Brand Tone</label>
+            <select id="brandTone">
+                <option value="">Select brand tone</option>
+                <option>Professional</option>
+                <option>Friendly</option>
+                <option>Formal</option>
+                <option>Conversational</option>
+                <option>Creative</option>
+                <option>Informative</option>
+            </select>
+
+            <label>Writing Guidelines</label>
+            <textarea id="writingRules"
+                placeholder="Example: Use professional language. Keep sentences clear and simple."></textarea>
+        </div>
+
+        <div class="guideline-card">
+            <h2>📋 Approved Facts & Specifications</h2>
+
+            <label>Approved Product Information</label>
+            <textarea id="approvedFacts"
+                placeholder="Example: Battery life: Up to 8 hours&#10;RAM: 16GB&#10;Storage: 512GB SSD"></textarea>
+
+            <label>Approved Promotional Offers</label>
+            <textarea id="offers"
+                placeholder="Example: Only officially authorised discounts can be advertised."></textarea>
+        </div>
+
+        <div class="guideline-card">
+            <h2>🚫 Restricted Words & Rules</h2>
+
+            <label>Restricted Words / Phrases</label>
+            <textarea id="restrictedWords"
+                placeholder="Example: Best in India, Guaranteed results, 100% risk-free"></textarea>
+
+            <label>Additional Brand Rules</label>
+            <textarea id="additionalRules"
+                placeholder="Enter other rules that content creators must follow..."></textarea>
+        </div>
+
+        <button type="submit" class="save-btn">
+            Save Brand Guidelines
+        </button>
+
+        <p id="statusMessage" class="status-message"></p>
+
+    </form>
+
+    <div class="guideline-card" style="margin-top:25px;">
+        <h2>📁 Saved Brand Profile</h2>
+        <div id="savedProfile" class="saved-box">
+            No brand profile saved yet.
+        </div>
+    </div>
+
+</main>
+<script>
+
+const form = document.getElementById("guidelineForm");
+
+const fields = [
+    "brandName",
+    "industry",
+    "description",
+    "brandTone",
+    "writingRules",
+    "approvedFacts",
+    "offers",
+    "restrictedWords",
+    "additionalRules"
+];
+
+// Display saved profile
+function displayProfile(data) {
+
+    document.getElementById("savedProfile").innerHTML = `
+        <strong>Brand:</strong> ${escapeHTML(data.brandName)}<br>
+        <strong>Industry:</strong> ${escapeHTML(data.industry)}<br>
+        <strong>Tone:</strong> ${escapeHTML(data.brandTone)}<br>
+        <strong>Approved Facts:</strong><br>
+        ${escapeHTML(data.approvedFacts).replace(/\n/g, "<br>")}
+    `;
+}
+
+// Prevent HTML injection
+function escapeHTML(value) {
+
+    return String(value || "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+
+}
+
+// Load guidelines from backend
+async function loadGuidelines() {
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/brand-guidelines"
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message);
+        }
+
+        if (result.data) {
+
+            fields.forEach(id => {
+                document.getElementById(id).value =
+                    result.data[id] || "";
+            });
+
+            displayProfile(result.data);
+
+        } else {
+
+            // Load previously saved browser data if available
+            const localData = localStorage.getItem(
+                "inkloomBrandGuidelines"
+            );
+
+            if (localData) {
+
+                const data = JSON.parse(localData);
+
+                fields.forEach(id => {
+                    document.getElementById(id).value =
+                        data[id] || "";
+                });
+
+                displayProfile(data);
+            }
+        }
+
+    } catch (error) {
+
+        console.error("Loading Error:", error);
+
+        document.getElementById("statusMessage").textContent =
+            "Backend connection failed while loading guidelines.";
+
+    }
+
+}
+
+// Save guidelines to backend
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const data = {};
+
+    fields.forEach(id => {
+
+        data[id] = document.getElementById(id).value.trim();
+
+    });
+
+    const status = document.getElementById("statusMessage");
+
+    status.textContent = "Saving brand guidelines...";
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/brand-guidelines",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message);
+        }
+
+        localStorage.setItem(
+            "inkloomBrandGuidelines",
+            JSON.stringify(data)
+        );
+
+        displayProfile(data);
+
+        status.textContent =
+            "✓ Brand guidelines saved successfully to backend!";
+
+        console.log("Backend Response:", result);
+
+    } catch (error) {
+
+        status.textContent =
+            "Failed to save guidelines. Check backend connection.";
+
+        console.error("Saving Error:", error);
+
+    }
+
+});
+
+// Load data when page opens
+loadGuidelines();
+
+</script>
+</body>
+</html>
