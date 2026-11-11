@@ -17,7 +17,7 @@ let issues = [];
 
 try {
     const response = await fetch(
-        "http://127.0.0.1:5000/api/content-submission",
+        "https://inkloom-ai-mknr.onrender.com/api/content-submission",
         {
             method: "POST",
             headers: {
