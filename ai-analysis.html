@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Analysis | Inkloom AI</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        .analysis-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+        }
+
+        .analysis-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+        }
+
+        #analysisContent {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        #analyzeBtn {
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: #2475d0;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .score-box {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .issue-card {
+            background: #fff5f5;
+            border-left: 4px solid #e05252;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .success-message {
+            color: green;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="analysis-container">
+
+        <h1>AI-Powered Brand Analysis</h1>
+
+        <p>
+            Analyse your content using Inkloom AI's
+            brand intelligence and compliance engine.
+        </p>
+
+        <div class="analysis-box">
+
+            <h2>Submit Content for AI Analysis</h2>
+
+            <textarea
+                id="analysisContent"
+                placeholder="Paste your content here for detailed AI analysis...">
+            </textarea>
+
+            <button id="analyzeBtn">
+                Start AI Analysis
+            </button>
+
+        </div>
+
+        <div class="analysis-box" id="results">
+
+            <h2>Analysis Report</h2>
+
+            <p>Your analysis report will appear here.</p>
+
+        </div>
+
+        <br>
+
+        <a href="index.html">← Back to Dashboard</a>
+
+    </div>
+
+    <script>
+
+        const analyzeBtn = document.getElementById("analyzeBtn");
+
+        analyzeBtn.addEventListener("click", async function () {
+
+            const content = document.getElementById("analysisContent").value.trim();
+
+            const results = document.getElementById("results");
+
+            if (!content) {
+                results.textContent = "Please enter content first.";
+                return;
+            }
+
+            results.textContent = "Analysing your content... Please wait.";
+
+            analyzeBtn.disabled = true;
+
+            try {
+
+                const response = await fetch(
+                    "https://inkloom-ai-mknr.onrender.com/api/content-submission",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            content: content
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Analysis failed.");
+                }
+
+                const report = data.data;
+                const analysis = report.analysis;
+                const issues = analysis.issues || [];
+
+                results.replaceChildren();
+
+                const heading = document.createElement("h2");
+                heading.textContent = "AI Analysis Report";
+
+                const brand = document.createElement("p");
+                brand.textContent = "Brand: " + (report.brand || "Not specified");
+
+                const score = document.createElement("div");
+                score.className = "score-box";
+                score.textContent =
+                    "Compliance Score: " + report.compliance_score + "/100";
+
+                const total = document.createElement("p");
+                total.textContent =
+                    "Total Issues Detected: " + analysis.total_issues;
+
+                results.append(heading, brand, score, total);
+
+                if (issues.length === 0) {
+
+                    const success = document.createElement("p");
+                    success.className = "success-message";
+                    success.textContent =
+                        "Excellent! No brand compliance issues detected.";
+
+                    results.appendChild(success);
+
+                }
+
+                issues.forEach(function (issue) {
+
+                    const card = document.createElement("div");
+                    card.className = "issue-card";
+
+                    const category = document.createElement("h3");
+                    category.textContent = issue.category;
+
+                    const severity = document.createElement("p");
+                    severity.textContent =
+                        "Severity: " + issue.severity;
+
+                    const problem = document.createElement("p");
+                    problem.textContent = issue.problem;
+
+                    const explanation = document.createElement("p");
+                    explanation.textContent =
+                        "Explanation: " + issue.explanation;
+
+                    const suggestion = document.createElement("p");
+                    suggestion.textContent =
+                        "Suggested Correction: " + issue.suggestion;
+
+                    card.append(
+                        category,
+                        severity,
+                        problem,
+                        explanation,
+                        suggestion
+                    );
+
+                    results.appendChild(card);
+
+                });
+
+                const notice = document.createElement("p");
+                notice.textContent =
+                    "Final approval requires human review.";
+
+                results.appendChild(notice);
+
+            } catch (error) {
+
+                results.textContent =
+                    "Analysis Error: " + error.message;
+
+                console.error(error);
+
+            } finally {
+
+                analyzeBtn.disabled = false;
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
