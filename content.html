@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +8,7 @@
 
     <title>Content Review | Inkloom AI</title>
 
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./Style.css">
 </head>
 
 <body>
@@ -24,14 +25,19 @@
 
             <label for="content">Enter your content:</label>
 
-            <textarea id="content" rows="8"
-                placeholder="Paste your advertisement, social media post, or other content here..."></textarea>
+            <textarea
+                id="content"
+                rows="8"
+                placeholder="Paste your advertisement, social media post, or other content here..."
+            ></textarea>
 
-            <button id="checkBtn">Check Content</button>
+            <button id="checkBtn" type="button">
+                Check Content
+            </button>
 
         </div>
 
-        <div id="result">
+        <div id="result" aria-live="polite">
 
             <h2>Analysis Results</h2>
 
@@ -39,61 +45,12 @@
 
         </div>
 
-        <a href="index.html">← Back to Dashboard</a>
+        <a href="./index.html">← Back to Dashboard</a>
 
     </div>
-    <script>
-const checkBtn = document.getElementById("checkBtn");
 
-checkBtn.addEventListener("click", async function () {
-
-    const content = document.getElementById("content").value;
-    const resultDiv = document.getElementById("result");
-
-    if (!content.trim()) {
-        resultDiv.innerHTML = "Please enter some content first.";
-        return;
-    }
-
-    resultDiv.innerHTML = "Analysing your content...";
-
-    try {
-        const response = await fetch(
-            "https://inkloom-ai-mknr.onrender.com/api/content-submission",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    content: content
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || "Backend request failed");
-        }
-
-        resultDiv.innerHTML = `
-            <h3>Analysis Results</h3>
-            <pre>${JSON.stringify(data, null, 2)}</pre>
-        `;
-
-    } catch (error) {
-        console.error("Backend Error:", error);
-        resultDiv.innerHTML =
-            "Backend connection failed: " + error.message;
-    }
-});
-</script>
-
-</body>
-</html>
-
-    <script src="Script.js"></script>
+    <!-- Load JavaScript only once -->
+    <script src="./Script.js" defer></script>
 
 </body>
 </html>
