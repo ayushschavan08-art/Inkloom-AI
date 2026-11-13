@@ -42,6 +42,56 @@
         <a href="index.html">← Back to Dashboard</a>
 
     </div>
+    <script>
+const checkBtn = document.getElementById("checkBtn");
+
+checkBtn.addEventListener("click", async function () {
+
+    const content = document.getElementById("content").value;
+    const resultDiv = document.getElementById("result");
+
+    if (!content.trim()) {
+        resultDiv.innerHTML = "Please enter some content first.";
+        return;
+    }
+
+    resultDiv.innerHTML = "Analysing your content...";
+
+    try {
+        const response = await fetch(
+            "https://inkloom-ai-mknr.onrender.com/api/content-submission",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: content
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Backend request failed");
+        }
+
+        resultDiv.innerHTML = `
+            <h3>Analysis Results</h3>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+
+    } catch (error) {
+        console.error("Backend Error:", error);
+        resultDiv.innerHTML =
+            "Backend connection failed: " + error.message;
+    }
+});
+</script>
+
+</body>
+</html>
 
     <script src="Script.js"></script>
 
