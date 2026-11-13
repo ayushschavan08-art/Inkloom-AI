@@ -1,148 +1,436 @@
-/* GENERAL SETTINGS */
+
+/* =========================================
+   INKLOOM AI - MODERN SAAS DESIGN SYSTEM
+   Shared stylesheet for all four pages
+========================================= */
+
+/* 1. GLOBAL SETTINGS */
+:root {
+    --navy: #151936;
+    --navy-light: #22294f;
+    --primary: #635bdb;
+    --primary-dark: #5148c5;
+    --purple: #8878f5;
+    --background: #f5f6fc;
+    --surface: #ffffff;
+    --text: #20243a;
+    --muted: #777d95;
+    --border: #e6e8f0;
+    --success: #16a36a;
+    --danger: #dc4c64;
+    --warning: #d99a27;
+    --shadow: 0 8px 28px rgba(28, 35, 75, 0.07);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 body {
-    background-color: #f4f6fb;
-    color: #20243a;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
 }
 
-/* SIDEBAR */
+/* 2. LINKS */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* 3. SIDEBAR */
 .sidebar {
-    width: 250px;
+    width: 260px;
     height: 100vh;
-    background-color: #171b35;
+    background: linear-gradient(180deg, #171b3b, #222951);
     color: white;
     position: fixed;
+    top: 0;
+    left: 0;
     padding: 30px 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo {
     font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
     margin-bottom: 45px;
-    color: #8b9cff;
+    color: #a99cff;
 }
 
 .sidebar nav a {
     display: block;
-    color: #c5c9dc;
+    color: #c5c9df;
     text-decoration: none;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    padding: 13px 15px;
+    margin-bottom: 9px;
+    border-radius: 10px;
+    transition: 0.25s ease;
 }
 
 .sidebar nav a:hover,
 .sidebar nav a.active {
-    background-color: #343d70;
+    background: linear-gradient(90deg, #635bdb, #8275ed);
     color: white;
+    transform: translateX(3px);
 }
 
 .sidebar-bottom {
-    position: absolute;
-    bottom: 25px;
+    margin-top: auto;
     font-size: 12px;
     color: #aeb5d0;
 }
 
-/* MAIN CONTENT */
+/* 4. MAIN CONTENT */
 .main-content {
-    margin-left: 250px;
-    padding: 30px;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    padding: 32px;
 }
 
-/* TOPBAR */
+/* 5. TOPBAR */
 .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
-    padding: 20px;
-    border-radius: 12px;
+    gap: 15px;
+    background: var(--surface);
+    padding: 20px 25px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
     margin-bottom: 30px;
+    box-shadow: var(--shadow);
 }
 
-/* WELCOME SECTION */
+/* 6. WELCOME SECTION */
 .welcome-section {
     margin-bottom: 30px;
 }
 
 .welcome-section h1 {
+    color: var(--navy);
     font-size: 30px;
-    margin-bottom: 10px;
+    font-weight: 750;
+    margin-bottom: 8px;
 }
 
 .welcome-section p {
-    color: #777d91;
+    color: var(--muted);
 }
 
-/* DASHBOARD CARDS */
+/* 7. DASHBOARD CARDS */
 .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
     margin-bottom: 30px;
 }
 
 .card {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    background: var(--surface);
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 32px rgba(28, 35, 75, 0.11);
 }
 
 .card h3 {
-    margin-bottom: 15px;
+    color: var(--navy);
+    margin-bottom: 12px;
+    font-size: 19px;
 }
 
 .card p {
-    color: #777d91;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 18px;
 }
 
 .card a {
-    color: #536dfe;
-    text-decoration: none;
-    font-weight: bold;
+    color: var(--primary);
+    font-weight: 700;
 }
 
 .card span {
-    color: #999;
+    color: var(--muted);
     font-size: 14px;
 }
 
-/* RECENT ACTIVITY */
+/* 8. RECENT ACTIVITY */
 .recent-activity {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
+    background: var(--surface);
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
 }
 
 .recent-activity h2 {
+    color: var(--navy);
     margin-bottom: 15px;
 }
 
 .recent-activity p {
-    color: #777d91;
+    color: var(--muted);
 }
 
-/* MOBILE RESPONSIVENESS */
-@media (max-width: 900px) {
+/* 9. GENERAL CONTAINERS */
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+.container h1 {
+    color: var(--navy);
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.container > p {
+    color: var(--muted);
+    margin-bottom: 25px;
+}
+
+/* 10. CONTENT REVIEW */
+.review-box,
+#result {
+    background: var(--surface);
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-top: 22px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.review-box h2,
+#result h2 {
+    color: var(--navy);
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: var(--navy);
+    font-weight: 650;
+    margin-bottom: 10px;
+}
+
+/* 11. INPUTS AND TEXT AREAS */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #dce0ec;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text);
+    font-size: 15px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 91, 219, 0.12);
+}
+
+/* 12. BUTTONS */
+button {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 650;
+    transition: 0.25s ease;
+}
+
+button:hover {
+    background: linear-gradient(135deg, var(--primary-dark), #7062df);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(99, 91, 219, 0.2);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 13. AI ANALYSIS PAGE */
+.analysis-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+}
+
+.analysis-box {
+    background: var(--surface);
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+}
+
+.analysis-box h2 {
+    color: var(--navy);
+    margin-bottom: 18px;
+}
+
+.score-box {
+    background: linear-gradient(135deg, #eeedff, #f5f1ff);
+    border: 1px solid #dedaff;
+    padding: 25px;
+    border-radius: 14px;
+    margin: 20px 0;
+}
+
+.score-box h2,
+.score-box h3 {
+    color: var(--navy);
+}
+
+.issue-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--danger);
+    padding: 22px;
+    margin: 16px 0;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.issue-card h3 {
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.issue-card p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 8px 0;
+}
+
+.severity {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 750;
+    margin-bottom: 12px;
+}
+
+.severity.high {
+    background: #ffe6e9;
+    color: #bd344b;
+}
+
+.severity.medium {
+    background: #fff2d8;
+    color: #9b6810;
+}
+
+.severity.low {
+    background: #def7e9;
+    color: #147c4d;
+}
+
+.review-notice {
+    background: #edf1ff;
+    border-left: 5px solid var(--primary);
+    padding: 17px;
+    margin-top: 20px;
+    border-radius: 10px;
+    color: #343d79;
+}
+
+.success-message {
+    background: #e2f7eb;
+    border: 1px solid #b9e9ce;
+    color: #147c4d;
+    padding: 18px;
+    border-radius: 12px;
+    margin: 18px 0;
+}
+
+/* 14. GENERAL HEADINGS */
+h1,
+h2,
+h3 {
+    line-height: 1.3;
+}
+
+h2 {
+    color: var(--navy);
+    margin-bottom: 15px;
+}
+
+/* 15. RESPONSIVE DESIGN */
+@media (max-width: 1000px) {
     .dashboard-cards {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .main-content {
+        padding: 24px;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .sidebar {
+        position: relative;
         width: 100%;
         height: auto;
-        position: relative;
+        padding: 18px;
+    }
+
+    .logo {
+        margin-bottom: 18px;
+    }
+
+    .sidebar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .sidebar nav a {
+        margin-bottom: 0;
+        padding: 10px 12px;
     }
 
     .sidebar-bottom {
@@ -151,267 +439,51 @@ body {
 
     .main-content {
         margin-left: 0;
-        padding: 15px;
+        width: 100%;
+        padding: 18px;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .container,
+    .analysis-container {
+        margin: 15px auto;
+        padding: 18px;
     }
 
     .topbar {
-        gap: 10px;
         flex-wrap: wrap;
+        padding: 16px;
     }
-}
 
-/* General Styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    .welcome-section h1,
+    .container h1 {
+        font-size: 25px;
+    }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f1f5f9;
-    color: #1e293b;
-}
-
-/* Main Container */
-.container {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 30px;
-}
-
-/* Heading */
-h1 {
-    color: #2563eb;
-    margin-bottom: 10px;
-}
-
-.container > p {
-    color: #64748b;
-    margin-bottom: 30px;
-}
-
-/* Review Box */
-.review-box,
-#result {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
-/* Text Area */
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-textarea {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 15px;
-    resize: vertical;
-    margin-bottom: 15px;
-}
-
-/* Button */
-button {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-button:hover {
-    background-color: #1d4ed8;
-}
-
-/* Dashboard Link */
-a {
-    color: #2563eb;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* CONTENT REVIEW PAGE */
-
-.container {
-    margin-left: 270px;
-    padding: 40px;
-    max-width: 1000px;
-}
-
-.container h1 {
-    color: #171b35;
-    font-size: 30px;
-    margin-bottom: 10px;
-}
-
-.container p {
-    color: #555;
-    font-size: 16px;
-    margin-bottom: 25px;
-}
-
-.review-box {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-    margin-top: 20px;
-}
-
-.review-box h2 {
-    color: #171b35;
-    margin-bottom: 20px;
-}
-
-.review-box label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-textarea {
-    width: 100%;
-    min-height: 180px;
-    padding: 15px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 15px;
-    resize: vertical;
-    margin-bottom: 15px;
-}
-
-textarea:focus {
-    outline: none;
-    border-color: #2563eb;
-}
-
-button {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-button:hover {
-    background-color: #1d4ed8;
-}
-
-#result {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-top: 25px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-}
-
-#result h2 {
-    color: #171b35;
-    margin-bottom: 15px;
-}
-
-@media (max-width: 768px) {
-    .container {
-        margin-left: 0;
+    .review-box,
+    #result,
+    .analysis-box {
         padding: 20px;
     }
 }
 
-/* ADVANCED ANALYSIS REPORT */
+@media (max-width: 480px) {
+    .sidebar nav {
+        flex-direction: column;
+    }
 
-.issue-card {
-    background: white;
-    border-left: 5px solid #e74c3c;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-}
-
-.issue-card h3 {
-    color: #171b35;
-    margin-bottom: 12px;
-}
-
-.severity {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.severity.high {
-    background: #ffe0e0;
-    color: #c0392b;
-}
-
-.severity.medium {
-    background: #fff0cc;
-    color: #a66a00;
-}
-
-.severity.low {
-    background: #dff5e5;
-    color: #218838;
-}
-
-.issue-card p {
-    line-height: 1.6;
-    margin: 8px 0;
-}
-
-.review-notice {
-    background: #e8f3ff;
-    border-left: 5px solid #2563eb;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 8px;
-    color: #174078;
-}
-
-/* Fix Brand Guidelines page layout */
-.main-content {
-    margin-left: 260px;
-    width: calc(100% - 260px);
-    padding: 30px;
-    box-sizing: border-box;
-    min-height: 100vh;
-}
-
-/* Keep forms within the available space */
-.main-content .container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
-/* Responsive layout for smaller screens */
-@media (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
+    .sidebar nav a {
         width: 100%;
-        padding: 15px;
+    }
+
+    button {
+        max-width: 100%;
+    }
+
+    .main-content {
+        padding: 14px;
     }
 }
