@@ -1,111 +1,243 @@
-// INKLOOM AI - Advanced Content Analysis
 
-const checkBtn = document.getElementById("checkBtn");
-const contentInput = document.getElementById("content");
-const resultBox = document.getElementById("result");
+// ==========================================
+// INKLOOM AI - CONTENT REVIEW SYSTEM
+// Frontend to Flask Backend Integration
+// ==========================================
 
-checkBtn.addEventListener("click", async function () {
-    const text = contentInput.value.trim();
+document.addEventListener("DOMContentLoaded", function () {
 
-    if (text === "") {
-        resultBox.textContent = "Please enter content to analyse.";
+    const checkBtn = document.getElementById("checkBtn");
+    const contentInput = document.getElementById("content");
+    const resultBox = document.getElementById("result");
+
+    const API_URL =
+        "https://inkloom-ai-mknr.onrender.com/api/content-submission";
+
+    if (!checkBtn || !contentInput || !resultBox) {
+        console.error("Inkloom AI: Required HTML elements not found.");
         return;
     }
-    // Connect to Flask Backend
-// Connect to Flask Backend
-let issues = [];
 
-try {
-    const response = await fetch(
-        "https://inkloom-ai-mknr.onrender.com/api/content-submission",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                content: text
-            })
+    // Safely create and display text elements
+    function addText(parent, tag, text, className = "") {
+        const element = document.createElement(tag);
+        element.textContent = text || "Not provided";
+
+        if (className) {
+            element.className = className;
         }
-    );
 
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-        throw new Error(data.message || "Backend request failed");
+        parent.appendChild(element);
+        return element;
     }
 
+    // Display analysis results
+    function displayResults(issues, totalIssues) {
 
-    console.log("Backend Connected Successfully:", data);
-    // Get analysis results from Flask Backend
-issues = data.data?.analysis?.issues || [];
+        resultBox.replaceChildren();
 
-console.log("Backend Analysis:", issues);
+        addText(resultBox, "h2", "Content Analysis Report");
 
-} catch (error) {
-    resultBox.textContent = "Backend connection failed!";
-    console.error("Error:", error);
-    return;
-}
-  
-    // Clear previous results
-    resultBox.replaceChildren();
+        addText(
+            resultBox,
+            "p",
+            `${totalIssues} potential issue(s) detected.`
+        );
 
-    // Report heading
-    const heading = document.createElement("h2");
-    heading.textContent = "Content Analysis Report";
-    resultBox.appendChild(heading);
+        if (issues.length === 0) {
 
-    // Summary
-    const summary = document.createElement("p");
-    summary.textContent = issues.length +
-        " potential issue(s) detected.";
-    resultBox.appendChild(summary);
+            addText(
+                resultBox,
+                "p",
+                "No issues detected by the current analysis rules. Human review is still recommended.",
+                "success-message"
+            );
 
-    if (issues.length === 0) {
-        const success = document.createElement("p");
-        success.textContent =
-            "No issues detected by the current demo rules. Human review is still recommended.";
-        resultBox.appendChild(success);
-        return;
+            return;
+        }
+
+        // Create individual issue cards
+        issues.forEach(function (issue, index) {
+
+            const card = document.createElement("div");
+            card.className = "issue-card";
+
+            addText(
+                card,
+                "h3",
+                `${index + 1}. ${issue.category || "General Issue"}`
+            );
+
+            const severity = (
+                issue.severity || "Unknown"
+            ).toString();
+
+            const severityElement = addText(
+                card,
+                "span",
+                `${severity} Severity`,
+                "severity"
+            );
+
+            severityElement.classList.add(
+                severity.toLowerCase().replace(/[^a-z0-9-]/g, "")
+            );
+
+            addText(
+                card,
+                "p",
+                `Problem: ${issue.problem || "Not specified"}`
+            );
+
+            addText(
+                card,
+                "p",
+                `Explanation: ${issue.explanation || "No explanation provided."}`
+            );
+
+            addText(
+                card,
+                "p",
+                `Suggested correction: ${issue.suggestion || "Please review manually."}`
+            );
+
+            resultBox.appendChild(card);
+        });
+
+        // Human approval notice
+        addText(
+            resultBox,
+            "p",
+            "Human review required: An authorised brand manager should make the final approval decision.",
+            "review-notice"
+        );
     }
 
-    // Display issue cards
-    issues.forEach(function (issue) {
+    // Handle Check Content button
+    checkBtn.addEventListener("click", async function () {
 
-        const card = document.createElement("div");
-        card.className = "issue-card";
+        const content = contentInput.value.trim();
 
-        const category = document.createElement("h3");
-        category.textContent = issue.category;
+        if (!content) {
+            resultBox.replaceChildren();
 
-        const severity = document.createElement("span");
-        severity.className =
-            "severity " + issue.severity.toLowerCase();
-        severity.textContent = issue.severity + " Severity";
+            addText(
+                resultBox,
+                "p",
+                "Please enter some content before starting the analysis."
+            );
 
-        const problem = document.createElement("p");
-        problem.textContent = issue.problem;
+            return;
+        }
 
-        const explanation = document.createElement("p");
-        explanation.textContent =
-            "Explanation: " + issue.explanation;
+        checkBtn.disabled = true;
+        checkBtn.textContent = "Analysing...";
 
-        const suggestion = document.createElement("p");
-        suggestion.textContent =
-            "Suggested correction: " + issue.suggestion;
+        resultBox.replaceChildren();
 
-        card.append(category, severity, problem, explanation, suggestion);
+        addText(
+            resultBox,
+            "h2",
+            "Analysis in Progress..."
+        );
 
-        resultBox.appendChild(card);
+        addText(
+            resultBox,
+            "p",
+            "Inkloom AI is checking your content against brand guidelines. Please wait."
+        );
+
+        try {
+
+            const response = await fetch(API_URL, {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    content: content
+                })
+            });
+
+            // Read response safely
+            const responseText = await response.text();
+
+            let result;
+
+            try {
+                result = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error(
+                    "Backend returned an invalid response. Please check the Render logs."
+                );
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result.error ||
+                    result.message ||
+                    `Server error: ${response.status}`
+                );
+            }
+
+            console.log("Inkloom AI Backend Response:", result);
+
+            // Support the response structure shown in your screenshot
+            const analysisData =
+                result.data?.analysis ||
+                result.analysis ||
+                result.data ||
+                result;
+
+            const issues =
+                analysisData.issues ||
+                [];
+
+            if (!Array.isArray(issues)) {
+                throw new Error(
+                    "Analysis response does not contain a valid issues list."
+                );
+            }
+
+            const totalIssues =
+                analysisData.total_issues ??
+                result.total_issues ??
+                issues.length;
+
+            console.log("Detected Issues:", issues);
+
+            // Display formatted results
+            displayResults(issues, totalIssues);
+
+        } catch (error) {
+
+            console.error("Inkloom AI Error:", error);
+
+            resultBox.replaceChildren();
+
+            addText(
+                resultBox,
+                "h2",
+                "Analysis Failed"
+            );
+
+            addText(
+                resultBox,
+                "p",
+                error.message || "Something went wrong. Please try again."
+            );
+
+        } finally {
+
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Content";
+
+        }
+
     });
 
-    // Human review notice
-    const notice = document.createElement("p");
-    notice.className = "review-notice";
-    notice.textContent =
-        "Human review required: An authorised brand manager should make the final approval decision.";
-
-    resultBox.appendChild(notice);
+    console.log("Inkloom AI Content Review initialized successfully.");
 
 });
