@@ -72,34 +72,31 @@
 
 <body>
 
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
+    <!-- Sidebar: Same structure as Dashboard -->
+    <aside class="sidebar">
 
-        <h2>Inkloom AI</h2>
+        <h2 class="logo">Inkloom AI</h2>
 
-        <a href="./index.html">Dashboard</a>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="guidelines.html">Brand Guidelines</a>
+            <a href="content.html">Content Review</a>
+            <a href="ai-analysis.html" class="active">AI Analysis</a>
+        </nav>
 
-        <a href="./guidelines.html">Brand Guidelines</a>
-
-        <a href="./content.html">Content Review</a>
-
-        <a href="./ai-analysis.html" class="active">
-            AI Analysis
-        </a>
-
-        <div class="sidebar-footer">
-            AI-Powered Brand Governance
+        <div class="sidebar-bottom">
+            <p>AI-Powered Brand Governance</p>
         </div>
 
-    </div>
+    </aside>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <main class="main-content">
 
-        <div class="topbar">
-            <strong>AI Analysis</strong>
+        <header class="topbar">
+            <h3>AI Analysis</h3>
             <span>Welcome, Team Member</span>
-        </div>
+        </header>
 
         <div class="analysis-container">
 
@@ -135,7 +132,7 @@
 
         </div>
 
-    </div>
+    </main>
 
     <!-- AI Analysis JavaScript -->
     <script>
@@ -145,7 +142,6 @@
         analyzeBtn.addEventListener("click", async function () {
 
             const content = document.getElementById("analysisContent").value.trim();
-
             const results = document.getElementById("results");
 
             if (!content) {
@@ -154,7 +150,6 @@
             }
 
             results.textContent = "Analysing your content... Please wait.";
-
             analyzeBtn.disabled = true;
 
             try {
@@ -221,8 +216,7 @@
                     category.textContent = issue.category;
 
                     const severity = document.createElement("p");
-                    severity.textContent =
-                        "Severity: " + issue.severity;
+                    severity.textContent = "Severity: " + issue.severity;
 
                     const problem = document.createElement("p");
                     problem.textContent = issue.problem;
@@ -255,9 +249,7 @@
 
             } catch (error) {
 
-                results.textContent =
-                    "Analysis Error: " + error.message;
-
+                results.textContent = "Analysis Error: " + error.message;
                 console.error(error);
 
             } finally {
