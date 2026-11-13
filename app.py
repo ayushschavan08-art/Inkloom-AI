@@ -237,21 +237,21 @@ for word in restricted_words:
         for match in matches:
             normalized_match = normalize_phrase(match)
 
-# Avoid reporting the same violation twice
-if any(
-    normalized_match in phrase or phrase in normalized_match
-    for phrase in restricted_matches
-):
-    continue
-    
-            if match.lower() not in approved_claims_text:
-                issues.append({
-                    "category": "Unsupported Claim",
-                    "severity": "High",
-                    "problem": f"Unsupported claim detected: {match}",
-                    "explanation": "This claim requires official brand approval.",
-                    "suggestion": "Use verified and authorised marketing claims."
-                })
+        # Avoid reporting the same violation twice
+        if any(
+            normalized_match in phrase or phrase in normalized_match
+            for phrase in restricted_matches
+        ):
+            continue
+        if match.lower() not in approved_claims_text:
+         issues.append({
+         "category": "Unsupported Claim",
+         "severity": "High",
+         "problem": f"Unsupported claim detected: {match}",
+         "explanation": "This claim requires official brand approval.",
+         "suggestion": "Use verified and authorised marketing claims."
+         })
+
 
     # RULE 5: Compliance Score
     penalty = 0
