@@ -230,14 +230,14 @@ def content_submission():
             r"\bcheapest\b",
             r"\bunbreakable\b",
             r"\bunlimited performance\b"
-]
+        ]
     
 
-    approved_claims_text = " ".join(
+       approved_claims_text = " ".join(
         convert_to_list(approved_claims)
-    ).lower()
+       ).lower()
 
-    for pattern in claim_patterns:
+       for pattern in claim_patterns:
         matches = re.findall(pattern, content, re.IGNORECASE)
 
         for match in matches:
