@@ -230,7 +230,7 @@ def content_submission():
     r"\bcheapest\b",
     r"\bunbreakable\b",
     r"\bunlimited performance\b"
-]
+    ]
     
 
     approved_claims_text = " ".join(
