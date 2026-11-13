@@ -233,11 +233,11 @@ def content_submission():
         ]
     
 
-       approved_claims_text = " ".join(
+        approved_claims_text = " ".join(
         convert_to_list(approved_claims)
-       ).lower()
+        ).lower()
 
-       for pattern in claim_patterns:
+        for pattern in claim_patterns:
         matches = re.findall(pattern, content, re.IGNORECASE)
 
         for match in matches:
@@ -248,6 +248,11 @@ def content_submission():
                 for phrase in restricted_matches
             ):
                 continue
+
+            if match.lower() not in approved_claims_text:
+                issues.append({
+                    "category": "Unsupported Claim",
+                    "severity": "High",
 
             if match.lower() not in approved_claims_text:
                 issues.append({
