@@ -219,16 +219,19 @@ def content_submission():
 
     # RULE 4: Unsupported Claims
 
-    claim_patterns = [
-        r"\bworld's best\b",
-        r"\bnumber one\b",
-        r"\bno\.?\s*1\b",
-        r"\b100%\s*guaranteed\b",
-        r"\bguaranteed results\b",
-        r"\bcheapest\b",
-        r"\bunbreakable\b",
-        r"\bunlimited performance\b"
-    ]
+       claim_patterns = [
+    r"\bworld's best\b",
+    r"\bnumber one\b",
+    r"\bno\.?\s*1\b",
+    r"\b100%\s*guaranteed\b",
+    r"\b100\s*(?:%|percent)\s+guaranteed\b",
+    r"\bbest[-\s]+in[-\s]+india\b",
+    r"\bguaranteed results\b",
+    r"\bcheapest\b",
+    r"\bunbreakable\b",
+    r"\bunlimited performance\b"
+]
+    
 
     approved_claims_text = " ".join(
         convert_to_list(approved_claims)
