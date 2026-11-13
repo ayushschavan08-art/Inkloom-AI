@@ -101,16 +101,16 @@ def content_submission():
     try:
         with open(GUIDELINES_FILE, "r", encoding="utf-8") as file:
             saved_data = json.load(file)
-
+    
         guidelines = saved_data.get("data", saved_data)
-
+    
     except (FileNotFoundError, json.JSONDecodeError):
         return jsonify({
             "success": False,
             "message": "Brand guidelines not found"
         }), 404
-
-       issues = []
+    
+    issues = []
     lower_text = content.lower()
 
     # Extract dynamic brand rules
@@ -155,53 +155,41 @@ def content_submission():
 
         if not normalized_word:
             continue
+            searchable_content = f" {normalized_content} "
+            searchable_word = f" {normalized_word} "
 
-        searchable_content = f" {normalized_content} "
-        searchable_word = f" {normalized_word} "
+            if searchable_word in searchable_content:
+                restricted_matches.add(normalized_word)
 
-        if (
-            searchable_word in searchable_content
-            and normalized_word not in restricted_matches
-        ):
-            restricted_matches.add(normalized_word)
-
-            issues.append({
-                "category": "Restricted Word",
-                "severity": "High",
-                "problem": f"Restricted phrase detected: {word}",
-                "explanation": "This phrase violates brand guidelines.",
-                "suggestion": "Replace it with approved brand language."
-            })
+                issues.append({
+                    "category": "Restricted Word",
+                    "severity": "High",
+                    "problem": f"Restricted phrase detected: {word}",
+                    "explanation": "This phrase violates brand guidelines.",
+                    "suggestion": "Replace it with approved brand language."
+                })
 
     # RULE 2: Unverified Product Specifications
+
     spec_pattern = (
         r"\b\d+(?:\.\d+)?\s*"
         r"(?:GB|TB|mAh|MP|W|Hz|hours?|hrs?|days?|years?)\b"
     )
 
-    product_specs_text = " ".join(convert_to_list(product_specs))
-    detected_specs = re.findall(
-        spec_pattern, content, re.IGNORECASE
-    )
+    detected_specs = re.findall(spec_pattern, content, re.IGNORECASE)
 
     for spec in detected_specs:
-        if not re.search(
-            re.escape(spec), product_specs_text, re.IGNORECASE
-        ):
+        if not re.search(re.escape(spec), str(product_specs), re.IGNORECASE):
             issues.append({
                 "category": "Unverified Specification",
                 "severity": "High",
                 "problem": f"Unverified specification: {spec}",
-                "explanation": (
-                    "This specification was not found in approved "
-                    "product information."
-                ),
-                "suggestion": (
-                    "Verify it against official product specifications."
-                )
+                "explanation": "This specification was not found in approved product information.",
+                "suggestion": "Verify it against official product specifications."
             })
 
     # RULE 3: Promotional Violation
+
     discounts = re.findall(
         r"\b\d+(?:\.\d+)?\s*%\s*(?:off|discount)\b",
         content,
@@ -216,7 +204,8 @@ def content_submission():
 
     for discount in discounts:
         percentage = re.search(
-            r"\d+(?:\.\d+)?\s*%", discount
+            r"\d+(?:\.\d+)?\s*%",
+            discount
         ).group()
 
         if percentage not in approved_percentages:
@@ -224,15 +213,12 @@ def content_submission():
                 "category": "Promotional Violation",
                 "severity": "Medium",
                 "problem": f"Unapproved discount detected: {discount}",
-                "explanation": (
-                    "Promotional offers must be officially authorised."
-                ),
-                "suggestion": (
-                    "Use a discount approved by the brand manager."
-                )
+                "explanation": "Promotional offers must be officially authorised.",
+                "suggestion": "Use a discount approved by the brand manager."
             })
 
     # RULE 4: Unsupported Claims
+
     claim_patterns = [
         r"\bworld's best\b",
         r"\bnumber one\b",
@@ -249,39 +235,28 @@ def content_submission():
     ).lower()
 
     for pattern in claim_patterns:
-        matches = re.findall(
-            pattern, content, re.IGNORECASE
-        )
+        matches = re.findall(pattern, content, re.IGNORECASE)
 
         for match in matches:
             normalized_match = normalize_phrase(match)
 
-            # Avoid reporting the same violation twice
-            is_duplicate = any(
-                normalized_match in phrase
-                or phrase in normalized_match
+            if any(
+                normalized_match in phrase or phrase in normalized_match
                 for phrase in restricted_matches
-            )
-
-            if is_duplicate:
+            ):
                 continue
 
             if match.lower() not in approved_claims_text:
                 issues.append({
                     "category": "Unsupported Claim",
                     "severity": "High",
-                    "problem": (
-                        f"Unsupported claim detected: {match}"
-                    ),
-                    "explanation": (
-                        "This claim requires official brand approval."
-                    ),
-                    "suggestion": (
-                        "Use verified and authorised marketing claims."
-                    )
+                    "problem": f"Unsupported claim detected: {match}",
+                    "explanation": "This claim requires official brand approval.",
+                    "suggestion": "Use verified and authorised marketing claims."
                 })
 
     # RULE 5: Compliance Score
+
     penalty = 0
 
     for issue in issues:
@@ -293,6 +268,7 @@ def content_submission():
     compliance_score = max(0, 100 - penalty)
 
     # FINAL RESPONSE
+
     return jsonify({
         "success": True,
         "message": "Content analysis completed successfully",
@@ -306,6 +282,8 @@ def content_submission():
             }
         }
     }), 200
+  
+
 
 if __name__ == "__main__":
     app.run(debug=True)
