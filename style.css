@@ -6,22 +6,21 @@
 
 /* 1. GLOBAL SETTINGS */
 :root {
-    --navy: #151936;
-    --navy-light: #22294f;
-    --primary: #635bdb;
-    --primary-dark: #5148c5;
-    --purple: #8878f5;
-    --background: #f5f6fc;
+    --navy: #14264b;
+    --navy-light: #1e3a6d;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --purple: #60a5fa;
+    --background: #f1f5fb;
     --surface: #ffffff;
-    --text: #20243a;
-    --muted: #777d95;
-    --border: #e6e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
     --success: #16a36a;
     --danger: #dc4c64;
     --warning: #d99a27;
-    --shadow: 0 8px 28px rgba(28, 35, 75, 0.07);
+    --shadow: 0 6px 24px rgba(30, 64, 120, 0.07);
 }
-
 * {
     margin: 0;
     padding: 0;
@@ -486,4 +485,59 @@ h2 {
     .main-content {
         padding: 14px;
     }
+}
+
+/* POLISHED BLUE THEME */
+
+/* Dashboard heading */
+.welcome-section h1 {
+    color: #1557b0;
+    font-weight: 750;
+}
+
+/* Card improvements */
+.card {
+    border: 1px solid #e1eaf7;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+}
+
+/* Card headings */
+.card h3 {
+    color: #183765;
+}
+
+/* Better buttons */
+button {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+}
+
+/* Better links */
+.card a {
+    color: #1763c6;
+}
+
+.card a:hover {
+    color: #123f87;
+}
+
+/* Cleaner topbar */
+.topbar {
+    border: 1px solid #e2eaf5;
+}
+
+/* Smooth page appearance */
+.card,
+.review-box,
+.analysis-box,
+.recent-activity {
+    transition: all 0.3s ease;
 }
