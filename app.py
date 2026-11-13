@@ -128,17 +128,51 @@ def content_submission():
         return []
 
     restricted_words = convert_to_list(restricted_words)
+    # NORMALISE TEXT FOR FLEXIBLE PHRASE MATCHING
+def normalize_phrase(value):
+    value = str(value or "").lower()
 
-    # RULE 1: Restricted Words Detection
-    for word in restricted_words:
-        if word.lower() in lower_text:
-            issues.append({
-                "category": "Restricted Word",
-                "severity": "High",
-                "problem": f"Restricted phrase detected: {word}",
-                "explanation": "This phrase violates brand guidelines.",
-                "suggestion": "Replace it with approved brand language."
-            })
+    # Convert percentage symbols into words
+    value = value.replace("%", " percent ")
+
+    # Replace punctuation and hyphens with spaces
+    value = re.sub(r"[^a-z0-9]+", " ", value)
+
+    # Remove unnecessary spaces
+    return re.sub(r"\s+", " ", value).strip()
+
+ # RULE 1: Smart Restricted Words Detection
+
+normalized_content = normalize_phrase(content)
+
+restricted_matches = set()
+
+for word in restricted_words:
+
+    normalized_word = normalize_phrase(word)
+
+    if not normalized_word:
+        continue
+
+    # Match complete phrases, ignoring punctuation variations
+    searchable_content = f" {normalized_content} "
+    searchable_word = f" {normalized_word} "
+
+    if searchable_word in searchable_content:
+
+        restricted_matches.add(normalized_word)
+
+        issues.append({
+            "category": "Restricted Word",
+            "severity": "High",
+            "problem": f"Restricted phrase detected: {word}",
+            "explanation": (
+                "This phrase violates brand guidelines."
+            ),
+            "suggestion": (
+                "Replace it with approved brand language."
+            )
+        })
 
     # RULE 2: Unverified Product Specifications
     spec_pattern = (
@@ -201,6 +235,15 @@ def content_submission():
         matches = re.findall(pattern, content, re.IGNORECASE)
 
         for match in matches:
+            normalized_match = normalize_phrase(match)
+
+# Avoid reporting the same violation twice
+if any(
+    normalized_match in phrase or phrase in normalized_match
+    for phrase in restricted_matches
+):
+    continue
+    
             if match.lower() not in approved_claims_text:
                 issues.append({
                     "category": "Unsupported Claim",
