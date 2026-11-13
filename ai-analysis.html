@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,6 +44,11 @@
             cursor: pointer;
         }
 
+        #analyzeBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .score-box {
             font-size: 22px;
             font-weight: bold;
@@ -66,44 +72,72 @@
 
 <body>
 
-    <div class="analysis-container">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
 
-        <h1>AI-Powered Brand Analysis</h1>
+        <h2>Inkloom AI</h2>
 
-        <p>
-            Analyse your content using Inkloom AI's
-            brand intelligence and compliance engine.
-        </p>
+        <a href="./index.html">Dashboard</a>
 
-        <div class="analysis-box">
+        <a href="./guidelines.html">Brand Guidelines</a>
 
-            <h2>Submit Content for AI Analysis</h2>
+        <a href="./content.html">Content Review</a>
 
-            <textarea
-                id="analysisContent"
-                placeholder="Paste your content here for detailed AI analysis...">
-            </textarea>
+        <a href="./ai-analysis.html" class="active">
+            AI Analysis
+        </a>
 
-            <button id="analyzeBtn">
-                Start AI Analysis
-            </button>
-
+        <div class="sidebar-footer">
+            AI-Powered Brand Governance
         </div>
-
-        <div class="analysis-box" id="results">
-
-            <h2>Analysis Report</h2>
-
-            <p>Your analysis report will appear here.</p>
-
-        </div>
-
-        <br>
-
-        <a href="index.html">← Back to Dashboard</a>
 
     </div>
 
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="topbar">
+            <strong>AI Analysis</strong>
+            <span>Welcome, Team Member</span>
+        </div>
+
+        <div class="analysis-container">
+
+            <h1>AI-Powered Brand Analysis</h1>
+
+            <p>
+                Analyse your content using Inkloom AI's
+                brand intelligence and compliance engine.
+            </p>
+
+            <div class="analysis-box">
+
+                <h2>Submit Content for AI Analysis</h2>
+
+                <textarea
+                    id="analysisContent"
+                    placeholder="Paste your content here for detailed AI analysis..."
+                ></textarea>
+
+                <button id="analyzeBtn" type="button">
+                    Start AI Analysis
+                </button>
+
+            </div>
+
+            <div class="analysis-box" id="results">
+
+                <h2>Analysis Report</h2>
+
+                <p>Your analysis report will appear here.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- AI Analysis JavaScript -->
     <script>
 
         const analyzeBtn = document.getElementById("analyzeBtn");
