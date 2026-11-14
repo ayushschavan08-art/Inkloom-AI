@@ -5,7 +5,9 @@ import re
 import os
 from pathlib import Path
 from google import genai
-
+client = genai.Client(
+    api_key=os.environ.get("GEMINI_API_KEY")
+)
 app = Flask(__name__)
 CORS(app)
 
@@ -48,7 +50,43 @@ def load_guidelines():
         data = data["data"]
 
     return data if isinstance(data, dict) else None
+def analyze_with_gemini(content, guidelines):
+    prompt = f"""
+You are an expert Brand Governance AI Analyst.
 
+Analyze the submitted content using these brand guidelines.
+
+BRAND GUIDELINES:
+{json.dumps(guidelines, indent=2)}
+
+SUBMITTED CONTENT:
+{content}
+
+Identify:
+1. Restricted words or phrases.
+2. Unsupported marketing claims.
+3. Unverified product specifications.
+4. Unapproved promotional offers.
+5. Tone and brand messaging inconsistencies.
+6. Accessibility or clarity concerns.
+
+Return a clear, structured analysis with:
+- Overall assessment
+- Identified issues
+- Severity (High, Medium, Low)
+- Explanation
+- Suggested correction
+
+Do not invent brand rules or product facts.
+If no issues are found, clearly state that.
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text
 
 @app.route("/", methods=["GET"])
 def home():
