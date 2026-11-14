@@ -182,6 +182,12 @@ def content_submission():
             "success": False,
             "message": "Brand guidelines not found. Please save brand guidelines first."
         }), 404
+            # AI-powered analysis using Google Gemini
+    try:
+        gemini_analysis = analyze_with_gemini(content, guidelines)
+    except Exception as e:
+        app.logger.exception("Gemini analysis failed")
+        gemini_analysis = "AI analysis is temporarily unavailable."
 
     issues = []
     normalized_content = normalize_phrase(content)
@@ -318,10 +324,11 @@ def content_submission():
             "content": content,
             "brand": guidelines.get("brandName", ""),
             "compliance_score": compliance_score,
-            "analysis": {
-                "total_issues": len(issues),
-                "issues": issues
-            }
+           "analysis": {
+    "total_issues": len(issues),
+    "issues": issues
+},
+"gemini_analysis": gemini_analysis
         }
     }), 200
 
