@@ -82,7 +82,7 @@ If no issues are found, clearly state that.
 """
 
     response = client.models.generate_content(
-        model="gemini-3.1-flash",
+        model="gemini-3.8-flash",
         contents=prompt
     )
 
